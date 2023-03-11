@@ -1,54 +1,37 @@
-/*!
-* Start Bootstrap - Freelancer v7.0.3 (https://startbootstrap.com/theme/freelancer)
-* Copyright 2013-2021 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-freelancer/blob/master/LICENSE)
-*/
-//
-// Scripts
-// 
+// Typewriter effect
+const typeWriter = document.querySelector('.typewriter');
+const words = ["Web Developer", "Designer", "Photographer"];
+let i = 0;
+let j = 0;
+let isDeleting = false;
 
-window.addEventListener('DOMContentLoaded', event => {
+function type() {
+	if (i === words.length) {
+		i = 0;
+	}
 
-    // Navbar shrink function
-    var navbarShrink = function () {
-        const navbarCollapsible = document.body.querySelector('#mainNav');
-        if (!navbarCollapsible) {
-            return;
-        }
-        if (window.scrollY === 0) {
-            navbarCollapsible.classList.remove('navbar-shrink')
-        } else {
-            navbarCollapsible.classList.add('navbar-shrink')
-        }
+	const word = words[i];
 
-    };
+	if (isDeleting) {
+		j--;
+		typeWriter.textContent = word.substring(0, j);
+	} else {
+		j++;
+		typeWriter.textContent = word.substring(0, j);
+	}
 
-    // Shrink the navbar 
-    navbarShrink();
+	if (!isDeleting && j === word.length) {
+		isDeleting = true;
+		setTimeout(() => {
+			isDeleting = false;
+			i++;
+		}, 1000);
+	} else if (isDeleting && j === 0) {
+		isDeleting = false;
+		i++;
+	}
 
-    // Shrink the navbar when page is scrolled
-    document.addEventListener('scroll', navbarShrink);
+	setTimeout(type, 300);
+}
 
-    // Activate Bootstrap scrollspy on the main nav element
-    const mainNav = document.body.querySelector('#mainNav');
-    if (mainNav) {
-        new bootstrap.ScrollSpy(document.body, {
-            target: '#mainNav',
-            offset: 72,
-        });
-    };
-
-    // Collapse responsive navbar when toggler is visible
-    const navbarToggler = document.body.querySelector('.navbar-toggler');
-    const responsiveNavItems = [].slice.call(
-        document.querySelectorAll('#navbarResponsive .nav-link')
-    );
-    responsiveNavItems.map(function (responsiveNavItem) {
-        responsiveNavItem.addEventListener('click', () => {
-            if (window.getComputedStyle(navbarToggler).display !== 'none') {
-                navbarToggler.click();
-            }
-        });
-    });
-
-});
+type();
